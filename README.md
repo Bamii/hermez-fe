@@ -1,5 +1,5 @@
 # hermez
-file sharing utility... share files with computers in the same network.
+file sharing utility... share files with computers on the same network.
 
 ## requirements
 - a computer system with nodejs installed on it.
