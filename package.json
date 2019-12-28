@@ -19,7 +19,7 @@
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "ip": "1.1.5",
-    "fs-extra": "^8.1.0",
+    "ws": "^6.0",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-redux": "^7.1.3",
