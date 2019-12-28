@@ -1,6 +1,6 @@
 {
   "name": "hermez",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "file sharing utility for computers on the same network",
   "main": "./server.js",
   "scripts": {
