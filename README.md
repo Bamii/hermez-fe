@@ -37,7 +37,7 @@ on opening the app homepage you will be presented with two options.
 - join a connection
 
 ### creating a connection
-- fill in the details accordingly. the port number is a combination of any 4 numbers, and the nickname is any silly name you can think of ;) (btw, it has to be 5 or more letters).
+- fill in the details accordingly. the port number is a combination of any 4 numbers, and the nickname is any silly name you can think of ;) (btw, it has to be 5 or more letters). <br>
 n.b: take note of the ip address displayed on the page you're redirected to after creating the connection. this will be the ip address that others will connect to.
 
 ### joining a connection
