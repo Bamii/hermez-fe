@@ -57,6 +57,10 @@ $ npm run start:prod
 ```
 <br>
 
-# THIS IS A W.I.P and will contain bugs. to help improve on this software, please report any issues you have.
+## THIS IS A W.I.P and will contain bugs. to help improve on this software, please report any issues you have.
 
-### bami :)
+# todo
+- add cli options (port number... ) ??
+- port to electron.
+
+### ❤, bami :)

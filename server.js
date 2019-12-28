@@ -25,3 +25,9 @@ app.listen(9000, (s) => {
   console.log();
   console.log("please navigate to localhost:9000 on your browser");
 });
+
+// TODO::
+/* 
+  - add cli options (port number and the likes)
+  - add colors
+*/
