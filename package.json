@@ -1,31 +1,30 @@
 {
-  "name": "react_app",
+  "name": "hermez",
   "version": "1.0.0",
-  "description": "",
+  "description": "file sharing utility for computers on the same network",
+  "main": "./server.js",
   "scripts": {
     "tailwind": "tailwind build public/styles/style.css -o public/styles/tailwind.css",
     "build:dev": "webpack --config webpack.dev.js",
     "build:prod": "webpack -p --config webpack.prod.js",
-    "start": "set NODE_ENV=development && webpack-dev-server",
+    "start:dev": "set NODE_ENV=development && webpack-dev-server",
+    "start": "node server.js",
     "test": ""
   },
-  "author": "",
+  "author": "Ayo-Salami Ayobami David",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
-    "css-loader": "^1.0.1",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "fs-extra": "^8.1.0",
-    "graceful-fs": "^4.2.3",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-redux": "^7.1.3",
     "react-router-dom": "^5.1.2",
     "react-transition-group": "^4.3.0",
     "redux": "^4.0.4",
-    "style-loader": "^0.23.1",
     "tailwindcss": "^1.1.4"
   },
   "devDependencies": {
@@ -39,15 +38,19 @@
     "babel-preset-react": "^6.24.1",
     "chai": "^4.2.0",
     "chai-jquery": "^2.1.0",
+    "css-loader": "^1.0.1",
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
     "jquery": "^3.3.1",
     "jsdom": "^13.0.0",
     "mocha": "^5.2.0",
     "url-loader": "^3.0.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.2.2"
-  }
+  },
+  "preferGlobal": true,
+  "bin": "./server.js"
 }

@@ -16,5 +16,10 @@ sh(app);
 app.listen(9000, (s) => {
   // listening
   // open the browser.
-  console.log('server is running on ' + 9000);
+  console.log("---------");
+  console.log("hermez");
+  console.log("---------");
+  console.log("hermez is running");
+  console.log();
+  console.log("please navigate to localhost:9000 on your browser");
 });
