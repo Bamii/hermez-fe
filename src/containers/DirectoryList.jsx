@@ -1,6 +1,6 @@
 import React from 'react';
 import DirectoryItem from './DirectoryItem.jsx';
-import { is, flatten } from '../utils/toolbox';
+import { is, flatten } from '../../utils/toolbox';
 
 const DirectoryList = ({ list, onDirSelect, selectedItem, subItem }) => {
 

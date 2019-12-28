@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { is } from '../utils/toolbox';
+import { is } from '../../utils/toolbox';
 import FileList from '../containers/FileList.jsx';
 import SectionTitle from '../containers/SectionTitle.jsx';
 import DirectoryList from '../containers/DirectoryList.jsx';

@@ -4,7 +4,7 @@ const ip = require('ip');
 const bp = require('body-parser');
 const WsServer = require('./ws/wsServer.js');
 const WsClient = require('./ws/wsClient');
-const { responseBuilder, is } = require('./src/utils/toolbox');
+const { responseBuilder, is } = require('./utils/toolbox');
 const { Transform } = require('stream');
 
 let server = null;

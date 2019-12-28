@@ -6,7 +6,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { setDownloadFolder, setClient } from "../actions";
 import Icon from '../../public/assets/info-icon.png'
 import Cog from '../../public/assets/cog.png'
-import { validate } from '../utils/toolbox';
+import { validate } from '../../utils/toolbox';
 
 const Home = (props) => {
   const [selectedMode, setMode] = useState(0);

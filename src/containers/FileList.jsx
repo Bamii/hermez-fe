@@ -1,7 +1,7 @@
 import React from 'react';
 import File from '../../public/assets/file2x.png'
 import SingleFile from './SingleFile.jsx';
-import { is } from '../utils/toolbox';
+import { is } from '../../utils/toolbox';
 
 const FileList = ({ extras, list = [], selectedItems=[], onFileSelect }) => {
   return (
