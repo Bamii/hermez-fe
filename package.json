@@ -9,6 +9,9 @@
     "build:prod": "webpack -p --config webpack.prod.js",
     "start:dev": "set NODE_ENV=development && webpack-dev-server",
     "start:prod": "node server.js",
+    "npm:patch": "npm version patch && npm publish",
+    "npm:minor": "npm version minor && npm publish",
+    "npm:major": "npm version major && npm publish",
     "test": ""
   },
   "author": "Ayo-Salami Ayobami David",
