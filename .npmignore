@@ -1,21 +1,23 @@
 /node_modules
 npm-debug.log
 .DS_Store
-.babelrc
 
 # IntelliJ
 *.iml
 /.idea
 
+/public
 /src
 /tests
 
+
+.babelrc
+./Dockerfile
+./index.html
 ./webpack.commomn.js
 ./webpack.config.js
 ./webpack.dev.js
 ./webpack.prod.js
-./Dockerfile
-./index.html
 ./tailwind.config.js
 ./postcss.config.js
 .gitignore
