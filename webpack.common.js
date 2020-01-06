@@ -1,32 +1,49 @@
-var path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const serverHandler = require('./serverHandler');
+const path = require("path");
+const glob = require("glob");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+// const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js"
   },
   module: {
     rules: [
-      { test: /\.txt$/, use: 'raw-loader' },
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
-      { test: /\.js$/, use: "babel-loader", exclude: /node_modules/},
-      { test: /\.jsx?$/, use: "babel-loader",  exclude: /node_modules/ },
-      { test: /\.(jpe?g|png|gif|svg)$/i, exclude: /node_modules/,
-        use:[{
-          loader: 'url-loader',
-          options: {
-            limit: 8000,
-            name: 'assets/[hash]-[name].[ext]'
+      { test: /\.txt$/, use: "raw-loader" },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "postcss-loader"
           }
-        }]
+        ]
+      },
+      { test: /\.js$/, use: "babel-loader", exclude: /node_modules/ },
+      { test: /\.jsx?$/, use: "babel-loader", exclude: /node_modules/ },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 8000,
+              name: "assets/[hash]-[name].[ext]"
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './index.html' })
+    require("tailwindcss"),
+    require("autoprefixer"),
+    new HtmlWebpackPlugin({ template: "./index.html" })
   ]
-}
-  
+};
