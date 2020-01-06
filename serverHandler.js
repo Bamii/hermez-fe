@@ -61,7 +61,6 @@ function serverHandler(app, s, c) {
             const filename = fname.join(" ");
 
             if (serverName !== nickname) {
-              console.log(`Done receiving ${filename}`);
               streams[filename].close();
               delete streams[filename];
             }
@@ -82,7 +81,6 @@ function serverHandler(app, s, c) {
             
             if (serverName !== nickname) {
               if (!streams.hasOwnProperty(filename)) {
-                console.log("Started receiving file...");
                 streams[filename] = fs.createWriteStream(`${home}/Documents/hermez/${filename}`);
               }
 
@@ -131,7 +129,7 @@ function serverHandler(app, s, c) {
     
     if (validFolder(`${home}/Documents`) && !validFolder(`${home}/Documents/hermez`)) {
       downloadFolder = `${home}/Documents/hermez`;
-      fs.mkdir(`${home}/Documents/hermez`, { recursive: true }, () => {
+      fs.mkdir(`${home}/Documents/hermez`, { recursive: true }, (err) => {
         if (err) return;
       });
     }
@@ -144,7 +142,7 @@ function serverHandler(app, s, c) {
         client.send(`nickname server-${nickname}`);
         res.status(200).send(responseBuilder("Successfully opened a client!", { nickname }));
       })
-      .on('close', () => console.log('connection closed on server'))
+      .on('close', () => {})
       .on('error', (err) => res.status(500).send(responseBuilder(err)))
       .on('message', (data) => {
         if (Buffer.isBuffer(data)) {
@@ -159,60 +157,10 @@ function serverHandler(app, s, c) {
         } else if (data === 'START') {
         } else if (is('string', data) && data.split(" ")[0] === "DONE") {
           const [,, ...fname] = data.split(" ");
-          console.log(`Done receiving ${fname.join(" ")}`)
-          console.log();
           streams[fname.join(" ")].close();
           delete streams[fname.join(" ")];
         }
       });
-  })
-
-  // the sending facility.
-  // ::self
-  app.post('/ws-send', function(req, res) {
-    const { filenames } = req.body;
-    let count = 0;
-
-    if (!is('array', filenames)) {
-      res.status(500).send(responseBuilder('The filenames property must be an array'));
-      return;
-    }
-    
-    filenames.map(filename => {
-      const sockets = Object.values(connections);
-      
-      for (let socket of sockets) {
-        socket.send(filename);
-  
-        // create a readStream using the filename
-        const selectedFile = fs.createReadStream(filename);
-        const transform = new Transform({
-          objectMode: true,
-          readableObjectMode: true,
-          transform(chunk, encoding, callback) {
-            const z = { filename, chunk };
-            callback(null, Buffer.from(JSON.stringify(z)));
-          }
-        })
-        
-        // SEND!!.
-        selectedFile
-          .on("ready", () => {
-            console.log(`Started sending ${filename}...`);
-            socket.send("START");
-          })
-          .pipe(transform)
-          .on("data", chunk => {
-            count++;
-            socket.send(Buffer.from(chunk))
-          })
-          .on('end', () => {
-            selectedFile.close();
-            socket.send(`DONE ${filename}`);
-          });
-        return;
-      }
-    })
   })
 
   // deleting the server.

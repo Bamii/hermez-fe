@@ -27,10 +27,12 @@ n.b: take note of the ip address displayed on the page you're redirected to afte
 - enter the ip in the field where it says 'port'
 - slot in any nickname you'd like to (p.s: it too shouldn't be shorter than 5). <br>
 
-## development...
-<hr>
+#### nb: your downloads are located in ....../{user_dir}/Documents/hermez.
+#### "user_dir" is the USERS's root directory NOT the computer's root directory.
 
-## how to run 
+## development...
+
+### how to run 
 - clone this repo
 ```
 $ git clone https://github.com/bamii/hermez-fe

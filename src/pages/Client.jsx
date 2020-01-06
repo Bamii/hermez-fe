@@ -32,6 +32,7 @@ const Client = props => {
       setIp(location.state.ip);
       // notification for done tasks.
       props.store.client.addEventListener("message", e => {
+        console.log(e);
         const [operation, ...message] = e.data.split(" ");
         switch (operation) {
           case "PROGRESS":
@@ -109,10 +110,10 @@ const Client = props => {
         }
         size += value.length;
         const progress = Math.floor((size / file.size) * 100);
-
+        
         document.getElementById(`file-${file.name}`).setAttribute('value', progress);
         document.getElementById(`progress-${file.name}`).innerText = `${progress}%`;
-
+        
         const json_to_encode = {
           nickname,
           chunk: value,
@@ -122,6 +123,7 @@ const Client = props => {
         const encoded_buffer = Buffer.from(JSON.stringify(json_to_encode));
         
         props.store.client.send(encoded_buffer);
+        console.log(progress);
         return reader.read().then(rec);
       });
     });
@@ -132,7 +134,7 @@ const Client = props => {
       <div style={{ height: "calc(100vh - 8.5rem)" }} className="flex">
         {/* left */}
         <div className="overflow-scroll relative p-10 pl-20 w-full">
-          <SectionTitle title={`hi ${nickname}, here's your history...`} />
+          <SectionTitle title={`hi ${nickname}, here's your received history...`} />
           <div id="list" className="py-8"></div>
         </div>
 
@@ -169,7 +171,7 @@ const Client = props => {
                 click to select files to send
               </label>
 
-              <div className="py-5 ">
+              <div className="py-5 w-full">
                 {fileList.length > 0 ? (
                   fileList.map(file => {
                     return (
@@ -179,7 +181,7 @@ const Client = props => {
                           <progress
                             id={`file-${file.name}`}
                             max={100}
-                            value={progressTracker[file.name]}
+                            defaultValue={0}
                             className="h-4 w-full"
                           ></progress>
                           <div id={`progress-${file.name}`} className="px-5 text-light">
