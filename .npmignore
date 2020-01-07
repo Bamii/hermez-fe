@@ -25,6 +25,5 @@ postcss.config.js
 /ws/wsClient.js
 /ws/wsServer.js
 
-/server.js
 /serverHandler.js
 
