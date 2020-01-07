@@ -3,7 +3,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const sh = require('./serverHandler');
+const sh = require('./serverHandler.min.js');
 
 app.use(express.static(path.join(__dirname, 'dist')));
 

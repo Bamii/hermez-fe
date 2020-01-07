@@ -1,16 +1,18 @@
-const fs = require('fs');
-const os = require('os');
-const ip = require('ip');
-const bp = require('body-parser');
-const WsServer = require('./ws/wsServer.js');
-const WsClient = require('./ws/wsClient');
-const { responseBuilder, is } = require('./utils/toolbox');
-const { Transform } = require('stream');
+const fs = require('fs'),
+os = require('os'),
+ip = require('ip'),
+bp = require('body-parser'),
+isProd = !(process.env.NODE_ENV && process.env.NODE_ENV === 'development');
+WsServer = isProd ? require('./ws/wsClient.min.js') : require('./ws/wsServer.js'),
+WsClient = isProd ? require('./ws/wsServer.min.js') : require('./ws/wsClient.js');
 
-let server = null;
-let connections = {};
-let browserConnections = {};
-let serverName;
+const { responseBuilder, is } = require('./utils/toolbox');
+
+let server = null,
+connections = {},
+browserConnections = {},
+serverName;
+
 const home = os.homedir();
 
 function validFolder(path) {

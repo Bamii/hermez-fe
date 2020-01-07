@@ -14,11 +14,17 @@ npm-debug.log
 
 .babelrc
 Dockerfile
-index.html
+/index.html
 webpack.common.js
 webpack.config.js
 webpack.dev.js
 webpack.prod.js
 tailwind.config.js
 postcss.config.js
+
+/ws/wsClient.js
+/ws/wsServer.js
+
+/server.js
+/serverHandler.js
 
