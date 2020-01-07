@@ -1,8 +1,2 @@
 /node_modules
 /dist
-
-/ws/wsClient.min.js
-/ws/wsServer.min.js
-
-/server.min.js
-/serverHandler.min.js

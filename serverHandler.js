@@ -2,9 +2,8 @@ const fs = require('fs'),
 os = require('os'),
 ip = require('ip'),
 bp = require('body-parser'),
-isProd = !(process.env.NODE_ENV && process.env.NODE_ENV === 'development');
-WsServer = isProd ? require('./ws/wsClient.min.js') : require('./ws/wsServer.js'),
-WsClient = isProd ? require('./ws/wsServer.min.js') : require('./ws/wsClient.js');
+WsServer = require('./ws/wsServer.js'),
+WsClient = require('./ws/wsClient.js');
 
 const { responseBuilder, is } = require('./utils/toolbox');
 

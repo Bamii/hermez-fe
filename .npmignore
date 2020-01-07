@@ -21,9 +21,3 @@ webpack.dev.js
 webpack.prod.js
 tailwind.config.js
 postcss.config.js
-
-/ws/wsClient.js
-/ws/wsServer.js
-
-/serverHandler.js
-
