@@ -1,9 +1,7 @@
-import React, { Component, useState } from "react";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import React, { useState } from "react";
+import { Route, BrowserRouter } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import Home from "./Home.jsx";
-import Host from "./Host.jsx";
-import Settings from './Settings.jsx';
 import Client from "./Client.jsx";
 import Help from "./Help.jsx";
 import Header from "../containers/Header.jsx";

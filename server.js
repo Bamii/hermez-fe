@@ -15,9 +15,8 @@ app.get('/', function(req, res) {
 // app routes;
 sh(app);
 
+// default port is 4387 ??.. or 9000 ??
 app.listen(9000, (s) => {
-  // listening
-  // open the browser.
   console.log("---------");
   console.log("hermez");
   console.log("---------");

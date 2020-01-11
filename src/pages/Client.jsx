@@ -15,7 +15,7 @@ const Client = props => {
   const [ip, setIp] = useState("");
 
   useEffect(() => {
-    // redirect them if theu didn't enter through the dashboard.
+    // redirect them if they didn't enter through the dashboard.
     // i.e if they don't have a state or if they don't have a
     // mode property in the state.
     const location = props.location;
@@ -30,46 +30,58 @@ const Client = props => {
     } else {
       setNickname(location.state.nickname);
       setIp(location.state.ip);
+
       // notification for done tasks.
       props.store.client.addEventListener("message", e => {
-        console.log(e);
         const [operation, ...message] = e.data.split(" ");
+
         switch (operation) {
           case "PROGRESS":
             const [progress, ...fn] = message.join(" ").split("-");
 
+            // do some computing to check if a particular filename has been sent already
+            // if yes, append 'copy' or something,
+            // if no, continue.
             if (!document.getElementById(`file-${fn.join(" ")}`)) {
               const received_list = document.getElementById("list");
               const single_file = document.createElement("div");
               single_file.id = `file-${fn.join(" ")}`;
 
+              /* 
+                - single file (row for a single file)
+                  - filename (filename)
+                  - container (container for the progress)
+                    - progress_bar (progress bar element)
+                    - progress_text (progress percentage)
+              */
               const filename = document.createElement("div");
               filename.innerText = fn.join(" ");
               filename.classList.add(...['font-light', 'py-5']);
 
-              const container = document.createElement('div');
-              container.classList.add('flex');
+              const progress_info_container = document.createElement('div');
+              progress_info_container.classList.add('flex');
               
-              const prog = document.createElement("progress");
-              const prog_text = document.createElement('div');
-              prog.setAttribute("value", progress);
-              prog.setAttribute("max", 100);
-              prog.classList.add('w-1/2');
-              prog_text.innerText = `${progress}%`;
-              prog_text.classList.add(...['font-light', 'px-3']);
+              const progress_bar = document.createElement("progress");
+              const progress_text = document.createElement('div');
+              progress_bar.setAttribute("value", progress);
+              progress_bar.setAttribute("max", 100);
+              progress_bar.classList.add('w-2/3');
+              progress_text.innerText = `${progress}%`;
+              progress_text.classList.add(...['font-light', 'px-3']);
 
 
-              container.append(prog);
-              container.append(prog_text)
+              progress_info_container.append(progress_bar);
+              progress_info_container.append(progress_text)
 
               single_file.append(filename);
-              single_file.append(container);
+              single_file.append(progress_info_container);
 
               received_list.prepend(single_file);
             } else {
               const zz = document.getElementById(`file-${fn.join(" ")}`);
-              zz.childNodes[1].childNodes[0].setAttribute("value", progress);
-              zz.childNodes[1].childNodes[1].innerText = `${progress}%`;
+              const progress = zz.childNodes[1];
+              progress.childNodes[0].setAttribute("value", progress);
+              progress.childNodes[1].innerText = `${progress}%`;
             }
             return;
 
@@ -81,6 +93,7 @@ const Client = props => {
             return;
         }
       });
+
       props.store.client.onclose = () => setVE(0);
     }
   }, [true]);
@@ -111,7 +124,7 @@ const Client = props => {
         size += value.length;
         const progress = Math.floor((size / file.size) * 100);
         
-        document.getElementById(`file-${file.name}`).setAttribute('value', progress);
+        document.getElementById(`sendfile-${file.name}`).setAttribute('value', progress);
         document.getElementById(`progress-${file.name}`).innerText = `${progress}%`;
         
         const json_to_encode = {
@@ -120,10 +133,8 @@ const Client = props => {
           filename: file.name,
           progress
         };
-        const encoded_buffer = Buffer.from(JSON.stringify(json_to_encode));
-        
-        props.store.client.send(encoded_buffer);
-        console.log(progress);
+
+        props.store.client.send(Buffer.from(JSON.stringify(json_to_encode)));
         return reader.read().then(rec);
       });
     });
@@ -179,7 +190,7 @@ const Client = props => {
                         <div className="text-md">{file.name}</div>
                         <div className="flex items-center">
                           <progress
-                            id={`file-${file.name}`}
+                            id={`sendfile-${file.name}`}
                             max={100}
                             defaultValue={0}
                             className="h-4 w-full"
@@ -228,12 +239,4 @@ const mapStateToProps = ({ client }) => {
   return { store: { client } };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    plsClient: client => {
-      dispatch(setClient(client));
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Client));
+export default connect(mapStateToProps, null)(withRouter(Client));

@@ -4,21 +4,18 @@ ip = require('ip'),
 bp = require('body-parser'),
 WsServer = require('./ws/wsServer.js'),
 WsClient = require('./ws/wsClient.js');
-
 const { responseBuilder, is } = require('./utils/toolbox');
 
-let server = null,
-connections = {},
-browserConnections = {},
-serverName;
-
-const home = os.homedir();
-
-function validFolder(path) {
-  return fs.existsSync(path);
-}
+const validFolder = (path) => fs.existsSync(path);
 
 function serverHandler(app, s, c) {
+  let server = null,
+  connections = {},
+  browserConnections = {},
+  downloadFolder,
+  serverName;
+  const home = os.homedir();
+
   app.use(bp.json({ type: 'application/json' }));
 
   // creating the server
@@ -26,13 +23,14 @@ function serverHandler(app, s, c) {
   app.post('/ws', function(req, res) {
     const { port, nickname } = req.body;
     let streams = {};
-    const home = os.homedir();
     serverName = nickname;
 
+    // TODO:: do something about the duplicate
     if (validFolder(`${home}/Documents`) && !validFolder(`${home}/Documents/hermez`)) {
       downloadFolder = `${home}/Documents/hermez`;
       fs.mkdir(`${home}/Documents/hermez`, { recursive: true }, (err) => {
         if (err) return;
+        // handle the error!!!
       });
     }
 
@@ -47,9 +45,6 @@ function serverHandler(app, s, c) {
             mode === 'browser' 
               ? browserConnections[nickname] = ws
               : connections[nickname] = ws;
-
-          } else if (is('string', m) && m === 'START') {
-            
           } else if (is('string', m) && m.split(" ")[0] === "DELETE") {
             const [, nickname] = m.split(" ");
             const client = connections[nickname];
@@ -93,11 +88,14 @@ function serverHandler(app, s, c) {
             for (let nick in browserConnections) {
               const sock = connections[nick];
               const browSock = browserConnections[nick];
+
               if (nick === nickname) {
                 // don't send to the same client.
                 continue;
               } else {
-                sock && sock.send(m);
+                // only send the necessary parts of the chunk to the receiving ('server') sockets
+                // and send the progress to the browser sockets.
+                sock && sock.send(Buffer.from(JSON.stringify({ filename, chunk })));
                 browSock && browSock.send(`PROGRESS ${progress}-${filename}`);
               }
             }
@@ -112,7 +110,7 @@ function serverHandler(app, s, c) {
   
     res.status(200).send(
       responseBuilder(
-        "Still here",
+        "a server has already been created",
         {
           "connections-browser": Object.keys(browserConnections).length,
           "connections-server": Object.keys(connections).length,
@@ -128,6 +126,7 @@ function serverHandler(app, s, c) {
     const { nickname, address } = req.body;
     const streams = {};
     
+    // TODO:: duplicate
     if (validFolder(`${home}/Documents`) && !validFolder(`${home}/Documents/hermez`)) {
       downloadFolder = `${home}/Documents/hermez`;
       fs.mkdir(`${home}/Documents/hermez`, { recursive: true }, (err) => {
@@ -135,18 +134,19 @@ function serverHandler(app, s, c) {
       });
     }
 
-    // take note of the ip address.
-    // const client = new WsClient('172.20.10.6:3001').connect();
     const client = new WsClient(address).connect();
+
     client
       .on('open', () => {
         client.send(`nickname server-${nickname}`);
         res.status(200).send(responseBuilder("Successfully opened a client!", { nickname }));
       })
       .on('close', () => {})
-      .on('error', (err) => res.status(500).send(responseBuilder(err)))
+      .on('error', (err) => { res.status(500).send(responseBuilder(err)); return; })
       .on('message', (data) => {
+        // the buffers of the file being sent
         if (Buffer.isBuffer(data)) {
+          // decode the chunk being received. 
           const { filename, chunk } = JSON.parse(data.toString());
           if (!streams.hasOwnProperty(filename)) {
             streams[filename] = fs.createWriteStream(`${home}/Documents/hermez/${filename}`);
@@ -155,7 +155,6 @@ function serverHandler(app, s, c) {
           if (!is('undefined', chunk)) {
             streams[filename].write(Buffer.from(Object.values(chunk)));
           }
-        } else if (data === 'START') {
         } else if (is('string', data) && data.split(" ")[0] === "DONE") {
           const [,, ...fname] = data.split(" ");
           streams[fname.join(" ")].close();
